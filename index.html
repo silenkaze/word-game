@@ -1,0 +1,1446 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>字靈無限對決：語源神話 (無限制字庫 ‧ 多重字義全解析版)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;900&family=Noto+Sans+TC:wght@400;700&display=swap');
+    * { box-sizing: border-box; user-select: none; }
+    body {
+      font-family: 'Noto Sans TC', sans-serif;
+      background: radial-gradient(circle at 50% 20%, #0f172a 0%, #030712 100%);
+      color: #e2e8f0;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    .font-fantasy { font-family: 'Cinzel', serif; }
+    .neon-border-p1 { box-shadow: 0 0 16px rgba(56, 189, 248, 0.45), inset 0 0 12px rgba(56, 189, 248, 0.2); }
+    .neon-border-p2 { box-shadow: 0 0 16px rgba(244, 63, 94, 0.45), inset 0 0 12px rgba(244, 63, 94, 0.2); }
+    .neon-border-ai { box-shadow: 0 0 16px rgba(168, 85, 247, 0.5), inset 0 0 12px rgba(168, 85, 247, 0.25); }
+    .shake { animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both; }
+    @keyframes shake {
+      10%, 90% { transform: translate3d(-2px, 0, 0); }
+      20%, 80% { transform: translate3d(4px, 0, 0); }
+      30%, 50%, 70% { transform: translate3d(-6px, 0, 0); }
+      40%, 60% { transform: translate3d(6px, 0, 0); }
+    }
+    .floating-text { animation: floatUp 1.2s ease-out forwards; pointer-events: none; }
+    @keyframes floatUp {
+      0% { opacity: 1; transform: translateY(0) scale(1); }
+      50% { transform: translateY(-30px) scale(1.3); }
+      100% { opacity: 0; transform: translateY(-60px) scale(1); }
+    }
+    @keyframes micPulse {
+      0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+      70% { box-shadow: 0 0 0 14px rgba(239, 68, 68, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+    }
+    .mic-recording {
+      animation: micPulse 1.4s infinite;
+      background-color: #ef4444 !important;
+      border-color: #f87171 !important;
+      color: white !important;
+    }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: rgba(15, 23, 42, 0.6); }
+    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+  </style>
+</head>
+<body class="p-2 sm:p-4 flex flex-col items-center justify-center min-h-screen">
+
+  <!-- 頂部主導航 -->
+  <header class="w-full max-w-5xl flex flex-wrap items-center justify-between gap-3 mb-3 bg-slate-900/80 backdrop-blur border border-slate-700/60 p-3 sm:p-4 rounded-2xl shadow-xl">
+    <div class="flex items-center gap-3">
+      <div class="w-11 h-11 rounded-xl bg-gradient-to-tr from-cyan-500 via-indigo-500 to-purple-600 flex items-center justify-center text-2xl shadow-lg shadow-indigo-500/20">
+        ⚡
+      </div>
+      <div>
+        <h1 class="text-lg sm:text-xl font-black font-fantasy tracking-wider bg-gradient-to-r from-cyan-300 via-purple-300 to-rose-400 bg-clip-text text-transparent">
+          WORD DUEL: OMNI-LEXICON
+        </h1>
+        <p class="text-xs text-slate-400">完整英語大辭典 ‧ 出招自動發音 ‧ 一字多義全解析</p>
+      </div>
+    </div>
+
+    <!-- 模式選擇與功能開關 -->
+    <div class="flex flex-wrap items-center gap-2">
+      <div class="flex bg-slate-950 p-1 rounded-xl border border-slate-800">
+        <button id="modeAiBtn" class="px-3 py-1.5 rounded-lg text-xs font-bold transition-all bg-purple-600 text-white shadow-md flex items-center gap-1 cursor-pointer">
+          <span>🤖</span>
+          <span>單人 vs AI</span>
+        </button>
+        <button id="modePvpBtn" class="px-3 py-1.5 rounded-lg text-xs font-bold transition-all text-slate-400 hover:text-white flex items-center gap-1 cursor-pointer">
+          <span>👥</span>
+          <span>同機雙人</span>
+        </button>
+      </div>
+
+      <div id="aiDiffWrapper" class="flex items-center gap-1 bg-slate-950 px-2 py-1 rounded-xl border border-slate-800 text-xs">
+        <span class="text-slate-400">難度:</span>
+        <select id="aiDifficulty" class="bg-transparent text-purple-300 font-bold focus:outline-none cursor-pointer">
+          <option value="easy" class="bg-slate-900 text-slate-200">初階 AI</option>
+          <option value="normal" class="bg-slate-900 text-slate-200" selected>中階 AI</option>
+          <option value="hard" class="bg-slate-900 text-slate-200">高階語靈 AI</option>
+        </select>
+      </div>
+
+      <!-- 自動朗讀開關 -->
+      <button id="autoTtsBtn" class="px-3 py-2 rounded-xl text-xs font-bold border border-emerald-500/40 bg-emerald-950/40 hover:bg-emerald-900/60 text-emerald-300 transition-all flex items-center gap-1 shadow-sm active:scale-95 cursor-pointer" title="切換出招時是否自動朗讀英文發音">
+        <span id="autoTtsIcon">🔊</span>
+        <span id="autoTtsText">朗讀：開</span>
+      </button>
+
+      <button id="restartBtn" class="px-3 py-2 rounded-xl text-xs font-bold border border-slate-700 bg-slate-800 hover:bg-slate-700 text-slate-200 transition-all flex items-center gap-1 shadow-sm active:scale-95 cursor-pointer">
+        <span>🔄</span>
+        <span>新對局</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- 戰鬥主舞台 -->
+  <main id="battleField" class="w-full max-w-5xl grid grid-cols-1 md:grid-cols-2 gap-4 relative">
+    <div id="fxOverlay" class="absolute inset-0 pointer-events-none z-30 overflow-hidden"></div>
+
+    <!-- P1 (左方玩家) -->
+    <section id="p1Card" class="bg-slate-900/90 border-2 border-cyan-500/50 rounded-2xl p-4 sm:p-5 flex flex-col justify-between neon-border-p1 transition-all relative overflow-hidden">
+      <div class="absolute top-0 right-0 w-28 h-28 bg-cyan-500/10 rounded-full blur-2xl pointer-events-none"></div>
+
+      <div>
+        <div class="flex items-center justify-between mb-2">
+          <div class="flex items-center gap-2">
+            <span class="text-2xl">🧙‍♂️</span>
+            <div>
+              <div class="font-bold text-cyan-300 text-sm sm:text-base flex items-center gap-1">
+                玩家 1 (蒼藍魔導)
+                <span id="p1TurnBadge" class="hidden text-[10px] bg-cyan-500 text-slate-950 font-black px-1.5 py-0.5 rounded">YOUR TURN</span>
+              </div>
+              <div class="text-[11px] text-slate-400">能量結晶護盾：<span id="p1ShieldVal" class="text-cyan-400 font-bold">0</span></div>
+            </div>
+          </div>
+          <div class="text-right">
+            <span class="text-xs text-slate-400">生命值</span>
+            <div class="font-fantasy font-black text-xl text-cyan-300"><span id="p1HpVal">100</span> / 100</div>
+          </div>
+        </div>
+
+        <div class="relative w-full h-4 bg-slate-800 rounded-full overflow-hidden mb-1 border border-slate-700">
+          <div id="p1HpBar" class="h-full bg-gradient-to-r from-cyan-500 to-emerald-400 transition-all duration-300 w-full"></div>
+          <div id="p1ShieldBar" class="absolute top-0 left-0 h-full bg-indigo-400/80 transition-all duration-300 w-0"></div>
+        </div>
+      </div>
+
+      <div class="my-4 py-3 px-4 rounded-xl bg-slate-950/70 border border-slate-800/80 min-h-[90px] flex flex-col justify-center items-center text-center">
+        <div id="p1CastSpell" class="text-lg font-black font-fantasy text-cyan-300 tracking-wider">等待詠唱...</div>
+        <div id="p1CastDetail" class="text-xs text-slate-400 mt-1">鍵入任意英文單字或點擊麥克風出招</div>
+      </div>
+
+      <div class="flex justify-between items-center text-xs text-slate-400 pt-2 border-t border-slate-800">
+        <div>連擊威力倍率：<span id="p1Combo" class="text-amber-400 font-bold">x1.0</span></div>
+        <div id="p1Status" class="text-emerald-400 font-bold">準備就緒</div>
+      </div>
+    </section>
+
+    <!-- P2 (右方玩家 / AI) -->
+    <section id="p2Card" class="bg-slate-900/90 border-2 border-purple-500/40 rounded-2xl p-4 sm:p-5 flex flex-col justify-between transition-all relative overflow-hidden">
+      <div class="absolute top-0 right-0 w-28 h-28 bg-purple-500/10 rounded-full blur-2xl pointer-events-none"></div>
+
+      <div>
+        <div class="flex items-center justify-between mb-2">
+          <div class="flex items-center gap-2">
+            <span class="text-2xl" id="p2Avatar">🤖</span>
+            <div>
+              <div class="font-bold text-purple-300 text-sm sm:text-base flex items-center gap-1">
+                <span id="p2NameLabel">詞魂智腦 (AI 挑戰者)</span>
+                <span id="p2TurnBadge" class="hidden text-[10px] bg-purple-500 text-slate-950 font-black px-1.5 py-0.5 rounded">AI THINKING</span>
+              </div>
+              <div class="text-[11px] text-slate-400">能量結晶護盾：<span id="p2ShieldVal" class="text-purple-400 font-bold">0</span></div>
+            </div>
+          </div>
+          <div class="text-right">
+            <span class="text-xs text-slate-400">生命值</span>
+            <div class="font-fantasy font-black text-xl text-purple-300"><span id="p2HpVal">100</span> / 100</div>
+          </div>
+        </div>
+
+        <div class="relative w-full h-4 bg-slate-800 rounded-full overflow-hidden mb-1 border border-slate-700">
+          <div id="p2HpBar" class="h-full bg-gradient-to-r from-purple-500 to-rose-500 transition-all duration-300 w-full"></div>
+          <div id="p2ShieldBar" class="absolute top-0 left-0 h-full bg-indigo-400/80 transition-all duration-300 w-0"></div>
+        </div>
+      </div>
+
+      <div class="my-4 py-3 px-4 rounded-xl bg-slate-950/70 border border-slate-800/80 min-h-[90px] flex flex-col justify-center items-center text-center">
+        <div id="p2CastSpell" class="text-lg font-black font-fantasy text-purple-300 tracking-wider">防禦姿態</div>
+        <div id="p2CastDetail" class="text-xs text-slate-400 mt-1">等待輪替行動...</div>
+      </div>
+
+      <div class="flex justify-between items-center text-xs text-slate-400 pt-2 border-t border-slate-800">
+        <div>連擊威力倍率：<span id="p2Combo" class="text-amber-400 font-bold">x1.0</span></div>
+        <div id="p2Status" class="text-slate-400 font-bold">休眠等待</div>
+      </div>
+    </section>
+  </main>
+
+  <!-- 中間出招輸入面板 -->
+  <section class="w-full max-w-5xl mt-3 bg-slate-900/90 border border-slate-700 rounded-2xl p-4 shadow-xl">
+    <div class="flex flex-wrap items-center justify-between gap-2 mb-2 pb-2 border-b border-slate-800 text-xs">
+      <div class="flex items-center gap-2">
+        <span class="w-2.5 h-2.5 rounded-full animate-ping" id="turnIndicatorDot" style="background:#38bdf8;"></span>
+        <span class="font-bold text-slate-200" id="turnPrompt">輪到 P1 詠唱魔咒：</span>
+        <span class="text-slate-400">（出招成功將自動朗讀單字發音）</span>
+      </div>
+      <div class="text-slate-400">
+        詞庫狀態：<span id="lexiconStatusBadge" class="text-emerald-400 font-bold">大辭典載入中...</span>
+      </div>
+    </div>
+
+    <!-- 輸入操作列 -->
+    <div class="flex flex-col sm:flex-row gap-2">
+      <button 
+        id="voiceBtn" 
+        title="點擊開始英語語音辨識"
+        class="px-4 py-3 rounded-xl font-bold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-600 transition-all flex items-center justify-center gap-2 text-sm shadow-md active:scale-95 shrink-0 cursor-pointer"
+      >
+        <span id="voiceIcon">🎙️</span>
+        <span id="voiceStatusText" class="hidden sm:inline">語音詠唱</span>
+      </button>
+
+      <div class="relative flex-1">
+        <input 
+          id="wordInput" 
+          type="text" 
+          autocomplete="off"
+          autocorrect="off"
+          spellcheck="false"
+          placeholder="口說或鍵入任意英文單字（例：strike, shield, charge, light...）" 
+          class="w-full bg-slate-950/80 border-2 border-slate-700 rounded-xl px-4 py-3 text-base sm:text-lg font-bold text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 transition-all font-mono"
+        />
+        <div id="inputHint" class="absolute right-3 top-3 text-xs font-mono text-slate-400 pointer-events-none"></div>
+      </div>
+
+      <div class="flex gap-2 shrink-0">
+        <button id="attackBtn" class="flex-1 sm:flex-none px-6 py-3 rounded-xl font-black bg-gradient-to-r from-rose-600 to-red-500 hover:from-rose-500 hover:to-red-400 text-white shadow-lg shadow-rose-600/30 active:scale-95 transition-all flex items-center justify-center gap-1.5 text-sm cursor-pointer">
+          <span>⚔</span>
+          <span>攻擊 (Enter)</span>
+        </button>
+        <button id="defendBtn" class="flex-1 sm:flex-none px-6 py-3 rounded-xl font-black bg-gradient-to-r from-sky-600 to-blue-500 hover:from-sky-500 hover:to-blue-400 text-white shadow-lg shadow-sky-600/30 active:scale-95 transition-all flex items-center justify-center gap-1.5 text-sm cursor-pointer">
+          <span>🛡️</span>
+          <span>護盾 (Shift+Enter)</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- 即時提示 -->
+    <div class="flex items-center justify-between text-[11px] text-slate-400 mt-2 px-1">
+      <span id="speechRealtimeHint">💡 提示：輸入任意真單字（支援口說「attack + 單字」直接出招）</span>
+      <span id="speechEngineStatus" class="text-slate-500 font-mono"></span>
+    </div>
+
+    <!-- 醒目錯誤警示列 -->
+    <div id="alertMsg" class="min-h-[24px] mt-1 text-xs font-bold text-rose-400 flex items-center gap-1 transition-opacity opacity-0 bg-rose-950/40 border border-rose-800/40 px-2 py-1 rounded-lg">
+      <span id="alertIcon">⚠️</span>
+      <span id="alertMsgText">不是合法的英文單字！</span>
+    </div>
+
+    <!-- 冷卻池（支援點擊單字卡片發音與多義中文講解） -->
+    <div class="mt-2 pt-2 border-t border-slate-800/80">
+      <div class="flex items-center justify-between text-xs text-slate-400 mb-2">
+        <span class="flex items-center gap-1 font-bold">
+          <span>🧊</span>
+          <span>已詠唱單字（點擊單字標籤可聽發音與查看完整多重中文詞義）：</span>
+        </span>
+        <span id="usedWordCount" class="text-slate-400 font-mono">0 個</span>
+      </div>
+      <div id="usedWordsContainer" class="flex flex-wrap gap-1.5 max-h-24 overflow-y-auto p-2 bg-slate-950/60 rounded-xl border border-slate-800/60 text-xs">
+        <span class="text-slate-600 italic">尚無冷卻單字，任何真實英文單字皆可自由出招...</span>
+      </div>
+    </div>
+
+    <!-- 點擊冷卻字彈出的多義中文詳解卡片 (Multi-Meaning Word Inspector) -->
+    <div id="wordDetailCard" class="mt-2.5 p-3.5 rounded-xl bg-slate-950 border border-slate-700/90 hidden transition-all shadow-lg">
+      <div class="flex items-center justify-between pb-2 mb-2 border-b border-slate-800/80">
+        <div class="flex items-center gap-2 flex-wrap">
+          <span id="detailWordText" class="text-base sm:text-lg font-black font-mono text-cyan-300">word</span>
+          <span id="detailElementBadge" class="text-[10px] px-1.5 py-0.5 rounded font-bold bg-amber-950/60 border border-amber-500/40 text-amber-300">🔥 烈火</span>
+          <span id="detailStatsText" class="text-[11px] font-mono text-slate-400 bg-slate-900 px-2 py-0.5 rounded border border-slate-800">基礎攻: 25 / 護盾: 20</span>
+          <button id="detailAudioBtn" title="朗讀發音" class="px-2 py-0.5 bg-slate-800 hover:bg-slate-700 text-xs rounded border border-slate-600 text-slate-200 transition-all flex items-center gap-1 cursor-pointer">
+            <span>🔊</span>
+            <span>發音</span>
+          </button>
+        </div>
+        <button id="closeDetailBtn" class="text-slate-400 hover:text-white text-xs px-1.5 py-0.5 cursor-pointer">✕ 關閉</button>
+      </div>
+      <!-- 多重詞義條列清單容器 -->
+      <div id="detailMeaningsList" class="space-y-1.5 text-xs max-h-40 overflow-y-auto pr-1">
+        <div class="text-slate-400">正在分析多重詞性與中文釋義...</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 戰鬥紀錄履歷 -->
+  <section class="w-full max-w-5xl mt-3 bg-slate-900/60 border border-slate-800 rounded-2xl p-3">
+    <div class="text-xs font-bold text-slate-400 mb-1 flex items-center justify-between">
+      <span>📜 戰鬥履歷 (Battle Log)</span>
+      <button id="clearLogBtn" class="text-[11px] text-slate-500 hover:text-slate-300 cursor-pointer">清除紀錄</button>
+    </div>
+    <div id="battleLog" class="h-28 overflow-y-auto space-y-1 font-mono text-xs pr-1">
+      <div class="text-slate-400">✨ 無限語靈擂台開啟！出招成功時系統將自動朗讀單字發音，點擊冷卻字可查看完整多義中文詳解！</div>
+    </div>
+  </section>
+
+  <script>
+    /* ============================================================
+       0. Web Audio 音效產生器
+    ============================================================ */
+    class SoundFX {
+      constructor() { this.ctx = null; }
+      init() {
+        try {
+          if (!this.ctx) {
+            const AudioContext = window.AudioContext || window.webkitAudioContext;
+            if (AudioContext) this.ctx = new AudioContext();
+          }
+          if (this.ctx && this.ctx.state === 'suspended') this.ctx.resume();
+        } catch (e) {}
+      }
+      playAttack() {
+        this.init();
+        try {
+          if (!this.ctx) return;
+          const now = this.ctx.currentTime;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(360, now);
+          osc.frequency.exponentialRampToValueAtTime(80, now + 0.22);
+          gain.gain.setValueAtTime(0.18, now);
+          gain.gain.linearRampToValueAtTime(0.01, now + 0.22);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now);
+          osc.stop(now + 0.22);
+        } catch (e) {}
+      }
+      playShield() {
+        this.init();
+        try {
+          if (!this.ctx) return;
+          const now = this.ctx.currentTime;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(240, now);
+          osc.frequency.exponentialRampToValueAtTime(640, now + 0.28);
+          gain.gain.setValueAtTime(0.15, now);
+          gain.gain.linearRampToValueAtTime(0.01, now + 0.28);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now);
+          osc.stop(now + 0.28);
+        } catch (e) {}
+      }
+      playError() {
+        this.init();
+        try {
+          if (!this.ctx) return;
+          const now = this.ctx.currentTime;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'square';
+          osc.frequency.setValueAtTime(140, now);
+          gain.gain.setValueAtTime(0.12, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now);
+          osc.stop(now + 0.2);
+        } catch (e) {}
+      }
+      playVictory() {
+        const notes = [261.6, 329.6, 392.0, 523.3, 659.2];
+        notes.forEach((freq, idx) => {
+          setTimeout(() => {
+            this.init();
+            try {
+              if (!this.ctx) return;
+              const osc = this.ctx.createOscillator();
+              const gain = this.ctx.createGain();
+              osc.type = 'triangle';
+              osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+              gain.gain.setValueAtTime(0.15, this.ctx.currentTime);
+              gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.3);
+              osc.connect(gain);
+              gain.connect(this.ctx.destination);
+              osc.start();
+              osc.stop(this.ctx.currentTime + 0.3);
+            } catch (e) {}
+          }, idx * 110);
+        });
+      }
+    }
+    const sfx = new SoundFX();
+
+    /* ============================================================
+       1. 權威完整英文大辭典模組 + 多義繁體中文對照庫
+    ============================================================ */
+    const FULL_LEXICON = new Set();
+
+    // 內建精準多義詞庫：每個單字對應一組 [{ pos: '詞性', def: '中文多重釋義' }]
+    const ZH_MULTI_DICT = new Map([
+      ["strike", [
+        { pos: "動詞 (v.)", def: "打擊、襲擊、敲擊；（疾病、災難等）突然襲來；罷工" },
+        { pos: "名詞 (n.)", def: "罷工；軍事攻擊、空襲；（棒球）好球；（保齡球）全倒" }
+      ]],
+      ["shield", [
+        { pos: "名詞 (n.)", def: "盾牌、護盾；防護物、保護人；盾形獎章" },
+        { pos: "動詞 (v.)", def: "保護、庇護、遮擋（使免受傷害或危險）" }
+      ]],
+      ["charge", [
+        { pos: "動詞 (v.)", def: "衝鋒、猛攻；收費、索價；指控、控告；為（電池）充電" },
+        { pos: "名詞 (n.)", def: "費用、價錢；指控、罪名；掌管、照料；電荷、蓄電量" }
+      ]],
+      ["light", [
+        { pos: "名詞 (n.)", def: "光、光線、光源；電燈；啟發、洞察力" },
+        { pos: "形容詞 (adj.)", def: "明亮的；輕的、輕便的；淡色的；輕鬆的" },
+        { pos: "動詞 (v.)", def: "點燃、照亮" }
+      ]],
+      ["spell", [
+        { pos: "動詞 (v.)", def: "拼寫、拼出；招致、意味著（某種後果）" },
+        { pos: "名詞 (n.)", def: "咒語、符咒、魔力；魅力；一段時間、一陣子" }
+      ]],
+      ["power", [
+        { pos: "名詞 (n.)", def: "力量、能力；權力、政權；電力、動力；強國" },
+        { pos: "動詞 (v.)", def: "驅動、為...提供動力" }
+      ]],
+      ["spark", [
+        { pos: "名詞 (n.)", def: "火花、火星；電火花；一絲（靈感、希望或生氣）" },
+        { pos: "動詞 (v.)", def: "引發、觸發（爭論或行動）；發出火花" }
+      ]],
+      ["wave", [
+        { pos: "名詞 (n.)", def: "波浪、海浪；（光、聲、熱等的）波；揮手；一陣（情緒或活動）" },
+        { pos: "動詞 (v.)", def: "揮手示意；揮舞；飄揚、起伏" }
+      ]],
+      ["dragon", [
+        { pos: "名詞 (n.)", def: "巨龍、神龍（西方神話中會噴火的巨型有翼生物）；嚴厲兇悍的人" }
+      ]],
+      ["phoenix", [
+        { pos: "名詞 (n.)", def: "鳳凰、不死鳥（神話中浴火重生的神鳥，象徵重生與永恆）" }
+      ]],
+      ["magic", [
+        { pos: "名詞 (n.)", def: "魔法、巫術；魔術、戲法；不可思議的魅力" },
+        { pos: "形容詞 (adj.)", def: "有魔力的、神奇的、迷人的" }
+      ]],
+      ["sanctuary", [
+        { pos: "名詞 (n.)", def: "聖殿、聖所；庇護所、避難所；野生動物保護區" }
+      ]],
+      ["tempest", [
+        { pos: "名詞 (n.)", def: "暴風雨、狂風暴雨；（情緒或社會的）劇烈動盪、騷動" }
+      ]],
+      ["voltage", [
+        { pos: "名詞 (n.)", def: "電壓、伏特數" }
+      ]],
+      ["blizzard", [
+        { pos: "名詞 (n.)", def: "暴風雪、大風雪；（比喻）大量湧現的事物" }
+      ]],
+      ["plasma", [
+        { pos: "名詞 (n.)", def: "電漿、等離子體（物質的第四態）；血漿" }
+      ]],
+      ["glacier", [
+        { pos: "名詞 (n.)", def: "冰川、冰河" }
+      ]],
+      ["inferno", [
+        { pos: "名詞 (n.)", def: "地獄、陰間；熊熊烈火、火海" }
+      ]],
+      ["guardian", [
+        { pos: "名詞 (n.)", def: "守護者、保護者；法律上的監護人" }
+      ]],
+      ["absolute", [
+        { pos: "形容詞 (adj.)", def: "絕對的、完全的；純粹的；專制的、不受限制的" },
+        { pos: "名詞 (n.)", def: "絕對事物、永恆不變的原理" }
+      ]],
+      ["lightning", [
+        { pos: "名詞 (n.)", def: "閃電、電光" },
+        { pos: "形容詞 (adj.)", def: "閃電般的、極快速的" }
+      ]],
+      ["thunder", [
+        { pos: "名詞 (n.)", def: "雷、雷聲；轟隆聲" },
+        { pos: "動詞 (v.)", def: "打雷；發出雷鳴般的巨響；怒喝" }
+      ]],
+      ["crystal", [
+        { pos: "名詞 (n.)", def: "水晶、石英；結晶體；高檔水晶玻璃器皿" },
+        { pos: "形容詞 (adj.)", def: "水晶般的、清澈透明的" }
+      ]],
+      ["diamond", [
+        { pos: "名詞 (n.)", def: "鑽石、金剛石；菱形；（撲克牌的）方塊；棒球場內野" }
+      ]],
+      ["warrior", [
+        { pos: "名詞 (n.)", def: "戰士、武士、勇士" }
+      ]],
+      ["champion", [
+        { pos: "名詞 (n.)", def: "冠軍、優勝者；捍衛者、擁護者" },
+        { pos: "動詞 (v.)", def: "為...而戰、公開支持、捍衛" }
+      ]],
+      ["shadow", [
+        { pos: "名詞 (n.)", def: "影子、陰影；暗處；微弱的跡象；跟蹤者" },
+        { pos: "動詞 (v.)", def: "跟蹤、尾隨；遮蔽、使蒙上陰影" }
+      ]],
+      ["knight", [
+        { pos: "名詞 (n.)", def: "（中世紀的）騎士、武士；爵士；（西洋棋中的）馬" },
+        { pos: "動詞 (v.)", def: "冊封...為爵士" }
+      ]],
+      ["blade", [
+        { pos: "名詞 (n.)", def: "刀刃、刀鋒；葉片；螺旋槳葉片；冰刀" }
+      ]],
+      ["legend", [
+        { pos: "名詞 (n.)", def: "傳說、傳奇故事；傳奇人物；地圖圖例、銘文" }
+      ]],
+      ["miracle", [
+        { pos: "名詞 (n.)", def: "奇蹟、神蹟；令人驚奇的人或事物" }
+      ]],
+      ["divine", [
+        { pos: "形容詞 (adj.)", def: "神聖的、神的；非凡的、極美的" },
+        { pos: "動詞 (v.)", def: "占卜、預言；憑直覺猜測" }
+      ]],
+      ["energy", [
+        { pos: "名詞 (n.)", def: "能量、能源；精力、活力、幹勁" }
+      ]],
+      ["galaxy", [
+        { pos: "名詞 (n.)", def: "星系、銀河系（the Galaxy）；一群顯赫傑出的人" }
+      ]],
+      ["universe", [
+        { pos: "名詞 (n.)", def: "宇宙、天地萬物；全世界、全人類；領域" }
+      ]],
+      ["eternal", [
+        { pos: "形容詞 (adj.)", def: "永恆的、不朽的；無休止的、沒完沒了的" }
+      ]],
+      ["infinite", [
+        { pos: "形容詞 (adj.)", def: "無限的、無窮的；極大的、數不盡的" }
+      ]],
+      ["victory", [
+        { pos: "名詞 (n.)", def: "勝利、成功、戰勝" }
+      ]],
+      ["triumph", [
+        { pos: "名詞 (n.)", def: "凱旋、巨大勝利、偉大成就；狂喜" },
+        { pos: "動詞 (v.)", def: "戰勝、獲得勝利、成功" }
+      ]],
+      ["conquer", [
+        { pos: "動詞 (v.)", def: "征服、攻克（領土或敵人）；克服（恐懼、困難）" }
+      ]],
+      ["pierce", [
+        { pos: "動詞 (v.)", def: "刺穿、穿透、扎破；（光線、聲音等）穿過；洞悉" }
+      ]],
+      ["wisdom", [
+        { pos: "名詞 (n.)", def: "智慧、才智；明智、精明；古訓、名言" }
+      ]],
+      ["courage", [
+        { pos: "名詞 (n.)", def: "勇氣、膽量、無畏精神" }
+      ]],
+      ["integrity", [
+        { pos: "名詞 (n.)", def: "正直、誠信、節操；完整、完好無損" }
+      ]],
+      ["discipline", [
+        { pos: "名詞 (n.)", def: "紀律、風紀；自律、自制力；學科、訓練方法" },
+        { pos: "動詞 (v.)", def: "訓練、管教；懲罰、處分" }
+      ]],
+      ["challenge", [
+        { pos: "名詞 (n.)", def: "挑戰、艱鉅任務；質疑、異議" },
+        { pos: "動詞 (v.)", def: "向...挑戰；對...表示懷疑" }
+      ]],
+      ["knowledge", [
+        { pos: "名詞 (n.)", def: "知識、學問；知曉、了解" }
+      ]],
+      ["creativity", [
+        { pos: "名詞 (n.)", def: "創造力、創意、獨創性" }
+      ]],
+      ["harmony", [
+        { pos: "名詞 (n.)", def: "和諧、融洽、協調；（音樂的）和聲" }
+      ]],
+      ["resilience", [
+        { pos: "名詞 (n.)", def: "韌性、復原力（從挫折中快速恢復的能力）；（物體的）彈性" }
+      ]],
+      ["inspiration", [
+        { pos: "名詞 (n.)", def: "靈感；啟發、鼓舞人心的人或事物；吸氣" }
+      ]],
+      ["serendipity", [
+        { pos: "名詞 (n.)", def: "意外發現珍奇或美好事物的運氣、機緣巧合" }
+      ]],
+      ["photosynthesis", [
+        { pos: "名詞 (n.)", def: "光合作用（綠色植物利用光能將二氧化碳和水轉化為有機物的過程）" }
+      ]],
+      ["renaissance", [
+        { pos: "名詞 (n.)", def: "文藝復興（歐洲14至16世紀的文化運動）；復興、新生" }
+      ]],
+      ["quintessential", [
+        { pos: "形容詞 (adj.)", def: "精髓的、典型的、最純粹本質的" }
+      ]],
+      ["phenomenon", [
+        { pos: "名詞 (n.)", def: "現象（自然或社會現象）；奇蹟、非凡的人或事物" }
+      ]],
+      ["extraordinary", [
+        { pos: "形容詞 (adj.)", def: "非凡的、卓越的；特別的、意想不到的；臨時的" }
+      ]],
+      ["equilibrium", [
+        { pos: "名詞 (n.)", def: "平衡、均衡（物理或經濟狀態）；內心的平靜、鎮定" }
+      ]],
+      ["breakthrough", [
+        { pos: "名詞 (n.)", def: "突破、重大進展、重要發現" }
+      ]],
+      ["crystallize", [
+        { pos: "動詞 (v.)", def: "使結晶；使（想法、計畫等）具體化、明確化" }
+      ]],
+      ["thunderbolt", [
+        { pos: "名詞 (n.)", def: "霹靂、閃電；晴天霹靂（突如其來的驚人消息）" }
+      ]],
+      ["water", [
+        { pos: "名詞 (n.)", def: "水、水域、海水" },
+        { pos: "動詞 (v.)", def: "給...澆水、灌溉；流口水、流淚" }
+      ]],
+      ["time", [
+        { pos: "名詞 (n.)", def: "時間、光陰；次數、倍數；時代、時期" },
+        { pos: "動詞 (v.)", def: "為...計時、測定時間；選擇...的時機" }
+      ]],
+      ["peace", [
+        { pos: "名詞 (n.)", def: "和平、太平；平靜、安寧、和睦" }
+      ]],
+      ["dream", [
+        { pos: "名詞 (n.)", def: "夢、夢境；夢想、理想" },
+        { pos: "動詞 (v.)", def: "做夢；夢想、渴望" }
+      ]],
+      ["heart", [
+        { pos: "名詞 (n.)", def: "心臟；內心、心靈；中心、核心；勇氣" }
+      ]]
+    ]);
+
+    const POS_ZH_MAP = {
+      noun: "名詞 (n.)",
+      verb: "動詞 (v.)",
+      adjective: "形容詞 (adj.)",
+      adverb: "副詞 (adv.)",
+      pronoun: "代名詞 (pron.)",
+      preposition: "介系詞 (prep.)",
+      conjunction: "連接詞 (conj.)",
+      interjection: "感嘆詞 (interj.)"
+    };
+
+    const FALLBACK_WORDS = Array.from(ZH_MULTI_DICT.keys());
+
+    async function loadFullDictionary() {
+      FALLBACK_WORDS.forEach(w => FULL_LEXICON.add(w.toLowerCase()));
+      
+      try {
+        const res = await fetch('https://cdn.jsdelivr.net/gh/dwyl/english-words@master/words_alpha.txt', {
+          signal: AbortSignal.timeout(4000)
+        });
+        if (res.ok) {
+          const text = await res.text();
+          const words = text.split(/\r?\n/);
+          for (let i = 0; i < words.length; i++) {
+            const w = words[i].trim().toLowerCase();
+            if (w.length >= 2) FULL_LEXICON.add(w);
+          }
+          document.getElementById('lexiconStatusBadge').textContent = `全英語大辭典就緒 (${FULL_LEXICON.size} 字)`;
+          return;
+        }
+      } catch (e) {}
+
+      document.getElementById('lexiconStatusBadge').textContent = '本地智能驗證引擎就緒';
+    }
+
+    function isValidEnglishPhonology(word) {
+      if (word.length < 2) return false;
+      if (!/^[a-z]+$/.test(word)) return false;
+      if (/[bcdfghjklmnpqrstvwxyz]{5,}/.test(word)) return false;
+      if (/[aeiou]{4,}/.test(word)) return false;
+      if (!/[aeiouy]/.test(word)) return false;
+
+      const spamPatterns = [
+        "asdf", "qwer", "zxcv", "hjkl", "yuio", "ghjk", "dfgh", "wert", "sdfg",
+        "aaaa", "bbbb", "cccc", "dddd", "ffff", "gggg", "hhhh", "jjjj", "kkkk",
+        "llll", "mmmm", "nnnn", "pppp", "qqqq", "rrrr", "ssss", "tttt", "wwww", "zzzz"
+      ];
+      for (const p of spamPatterns) {
+        if (word.includes(p)) return false;
+      }
+      return true;
+    }
+
+    function checkIsRealWord(word) {
+      const clean = word.toLowerCase().trim();
+      if (clean.length < 2) return false;
+      if (FULL_LEXICON.has(clean)) return true;
+      if (clean.endsWith('s') && FULL_LEXICON.has(clean.slice(0, -1))) return true;
+      if (clean.endsWith('es') && FULL_LEXICON.has(clean.slice(0, -2))) return true;
+      if (clean.endsWith('ed') && FULL_LEXICON.has(clean.slice(0, -2))) return true;
+      if (clean.endsWith('ing') && FULL_LEXICON.has(clean.slice(0, -3))) return true;
+
+      if (FULL_LEXICON.size < 5000 && isValidEnglishPhonology(clean)) return true;
+      return false;
+    }
+
+    const ELEMENT_META = {
+      fire:    { name: '烈火', icon: '🔥', color: 'text-amber-400' },
+      ice:     { name: '寒冰', icon: '❄️', color: 'text-cyan-300' },
+      thunder: { name: '雷霆', icon: '⚡', color: 'text-yellow-300' },
+      holy:    { name: '聖靈', icon: '✨', color: 'text-emerald-300' }
+    };
+
+    /* ============================================================
+       2. 遊戲狀態
+    ============================================================ */
+    const state = {
+      mode: 'pve', 
+      aiDiff: 'normal',
+      turn: 'p1',
+      gameOver: false,
+      isListening: false,
+      autoTts: true,
+      aiTimer: null,
+      inspectingWord: null,
+      p1: { hp: 100, maxHp: 100, shield: 0, combo: 1.0 },
+      p2: { hp: 100, maxHp: 100, shield: 0, combo: 1.0 },
+      usedWords: new Set()
+    };
+
+    const els = {
+      modeAiBtn: document.getElementById('modeAiBtn'),
+      modePvpBtn: document.getElementById('modePvpBtn'),
+      aiDiffWrapper: document.getElementById('aiDiffWrapper'),
+      aiDifficulty: document.getElementById('aiDifficulty'),
+      autoTtsBtn: document.getElementById('autoTtsBtn'),
+      autoTtsIcon: document.getElementById('autoTtsIcon'),
+      autoTtsText: document.getElementById('autoTtsText'),
+      restartBtn: document.getElementById('restartBtn'),
+
+      p1Card: document.getElementById('p1Card'),
+      p2Card: document.getElementById('p2Card'),
+      p1HpBar: document.getElementById('p1HpBar'),
+      p2HpBar: document.getElementById('p2HpBar'),
+      p1ShieldBar: document.getElementById('p1ShieldBar'),
+      p2ShieldBar: document.getElementById('p2ShieldBar'),
+      p1HpVal: document.getElementById('p1HpVal'),
+      p2HpVal: document.getElementById('p2HpVal'),
+      p1ShieldVal: document.getElementById('p1ShieldVal'),
+      p2ShieldVal: document.getElementById('p2ShieldVal'),
+      p1Combo: document.getElementById('p1Combo'),
+      p2Combo: document.getElementById('p2Combo'),
+      p1Status: document.getElementById('p1Status'),
+      p2Status: document.getElementById('p2Status'),
+      p1CastSpell: document.getElementById('p1CastSpell'),
+      p2CastSpell: document.getElementById('p2CastSpell'),
+      p1CastDetail: document.getElementById('p1CastDetail'),
+      p2CastDetail: document.getElementById('p2CastDetail'),
+      p1TurnBadge: document.getElementById('p1TurnBadge'),
+      p2TurnBadge: document.getElementById('p2TurnBadge'),
+      p2NameLabel: document.getElementById('p2NameLabel'),
+      p2Avatar: document.getElementById('p2Avatar'),
+
+      wordInput: document.getElementById('wordInput'),
+      attackBtn: document.getElementById('attackBtn'),
+      defendBtn: document.getElementById('defendBtn'),
+      voiceBtn: document.getElementById('voiceBtn'),
+      voiceIcon: document.getElementById('voiceIcon'),
+      voiceStatusText: document.getElementById('voiceStatusText'),
+      speechRealtimeHint: document.getElementById('speechRealtimeHint'),
+      speechEngineStatus: document.getElementById('speechEngineStatus'),
+
+      turnIndicatorDot: document.getElementById('turnIndicatorDot'),
+      turnPrompt: document.getElementById('turnPrompt'),
+      alertMsg: document.getElementById('alertMsg'),
+      alertMsgText: document.getElementById('alertMsgText'),
+      inputHint: document.getElementById('inputHint'),
+
+      usedWordsContainer: document.getElementById('usedWordsContainer'),
+      usedWordCount: document.getElementById('usedWordCount'),
+
+      wordDetailCard: document.getElementById('wordDetailCard'),
+      detailWordText: document.getElementById('detailWordText'),
+      detailElementBadge: document.getElementById('detailElementBadge'),
+      detailAudioBtn: document.getElementById('detailAudioBtn'),
+      closeDetailBtn: document.getElementById('closeDetailBtn'),
+      detailMeaningsList: document.getElementById('detailMeaningsList'),
+      detailStatsText: document.getElementById('detailStatsText'),
+
+      battleLog: document.getElementById('battleLog'),
+      clearLogBtn: document.getElementById('clearLogBtn'),
+      fxOverlay: document.getElementById('fxOverlay')
+    };
+
+    /* ============================================================
+       3. 數值換算演算法
+    ============================================================ */
+    function evaluateWordStats(cleanWord) {
+      const len = cleanWord.length;
+      const rareLetters = (cleanWord.match(/[zqxjkw]/g) || []).length;
+      const baseAtk = Math.min(55, Math.max(12, Math.round(len * 2.5 + rareLetters * 4)));
+      const baseDef = Math.min(50, Math.max(8, Math.round(len * 2.2 + (rareLetters % 3) * 2)));
+
+      let element = 'fire';
+      if (cleanWord.includes('q') || cleanWord.includes('z') || cleanWord.includes('x') || cleanWord.includes('k')) {
+        element = 'thunder';
+      } else if (cleanWord.endsWith('tion') || cleanWord.endsWith('ment') || cleanWord.endsWith('ness')) {
+        element = 'ice';
+      } else if (len >= 7) {
+        element = 'holy';
+      } else {
+        const sum = cleanWord.split('').reduce((acc, c) => acc + c.charCodeAt(0), 0);
+        element = ['fire', 'ice', 'thunder', 'holy'][sum % 4];
+      }
+
+      return { word: cleanWord, atk: baseAtk, defVal: baseDef, element };
+    }
+
+    /* ============================================================
+       4. 單字發音與一字多義中文詳解系統
+    ============================================================ */
+    function speakWord(word) {
+      try {
+        if (!('speechSynthesis' in window)) return;
+        window.speechSynthesis.cancel();
+        const utter = new SpeechSynthesisUtterance(word);
+        utter.lang = 'en-US';
+        utter.rate = 0.92;
+        window.speechSynthesis.speak(utter);
+      } catch (e) {}
+    }
+
+    function renderMeaningItems(items) {
+      els.detailMeaningsList.innerHTML = '';
+      items.forEach(item => {
+        const row = document.createElement('div');
+        row.className = 'flex items-start gap-2 bg-slate-900/70 p-2 rounded-lg border border-slate-800/80';
+        row.innerHTML = `
+          <span class="px-1.5 py-0.5 rounded text-[11px] font-bold bg-indigo-950 text-indigo-300 border border-indigo-700/50 shrink-0">${item.pos}</span>
+          <span class="text-slate-200 leading-relaxed">${item.def}</span>
+        `;
+        els.detailMeaningsList.appendChild(row);
+      });
+    }
+
+    function analyzeMorphologyFallback(word, meta) {
+      let hint = "英語核心基礎詞彙";
+      if (word.endsWith("tion") || word.endsWith("sion") || word.endsWith("ment") || word.endsWith("ness") || word.endsWith("ity")) {
+        hint = "常見抽象名詞後綴";
+      } else if (word.endsWith("ly")) {
+        hint = "常見副詞後綴（表示狀態或方式）";
+      } else if (word.endsWith("able") || word.endsWith("ible") || word.endsWith("ful") || word.endsWith("ous") || word.endsWith("ive")) {
+        hint = "常見形容詞後綴";
+      } else if (word.endsWith("ing")) {
+        hint = "現在分詞 / 動名詞形態";
+      } else if (word.endsWith("ed")) {
+        hint = "過去式 / 過去分詞形態";
+      } else if (word.endsWith("s") || word.endsWith("es")) {
+        hint = "複數名詞或第三人稱單數動詞形態";
+      }
+      return [{ pos: "詞源結構", def: `英語合法單字（共 ${word.length} 個字母，${hint}，歸屬「${meta.name}」能階）` }];
+    }
+
+    async function inspectWord(word) {
+      state.inspectingWord = word;
+      const stats = evaluateWordStats(word);
+      const meta = ELEMENT_META[stats.element];
+
+      els.detailWordText.textContent = word;
+      els.detailElementBadge.textContent = `${meta.icon} ${meta.name}`;
+      els.detailElementBadge.className = `text-[10px] px-1.5 py-0.5 rounded font-bold bg-slate-900 border border-slate-700 ${meta.color}`;
+      els.detailStatsText.textContent = `基礎攻: ${stats.atk} / 護盾: ${stats.defVal}`;
+      els.wordDetailCard.classList.remove('hidden');
+
+      speakWord(word);
+
+      // 1. 優先檢查本地多義中文庫（秒出所有詞性與釋義）
+      if (ZH_MULTI_DICT.has(word)) {
+        renderMeaningItems(ZH_MULTI_DICT.get(word));
+        return;
+      }
+
+      // 2. 檢查變化形還原（如 strikes -> strike）
+      const stems = [word.slice(0, -1), word.slice(0, -2), word.slice(0, -3)];
+      for (const stem of stems) {
+        if (stem.length >= 2 && ZH_MULTI_DICT.has(stem)) {
+          const baseItems = ZH_MULTI_DICT.get(stem).map(m => ({
+            pos: m.pos,
+            def: `${m.def} 【${word} 為原型 ${stem} 的變化形】`
+          }));
+          ZH_MULTI_DICT.set(word, baseItems);
+          renderMeaningItems(baseItems);
+          return;
+        }
+      }
+
+      els.detailMeaningsList.innerHTML = '<div class="text-cyan-400 animate-pulse">正在查詢該單字的所有詞性與多重中文釋義...</div>';
+
+      // 3. 非同步查詢辭典並收集全部詞性與多重釋義，逐條翻譯為繁體中文
+      try {
+        const dictRes = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`, {
+          signal: AbortSignal.timeout(2500)
+        });
+
+        if (dictRes.ok) {
+          const data = await dictRes.json();
+          const allMeanings = [];
+
+          // 彙整所有詞性下的前幾個主要定義
+          if (Array.isArray(data)) {
+            data.forEach(entry => {
+              (entry.meanings || []).forEach(m => {
+                const posLabel = POS_ZH_MAP[m.partOfSpeech] || m.partOfSpeech || "詞義";
+                // 取該詞性下最多前 2 個定義合併
+                const defs = (m.definitions || []).slice(0, 2).map(d => d.definition).filter(Boolean);
+                if (defs.length > 0) {
+                  allMeanings.push({ pos: posLabel, enText: defs.join("; ") });
+                }
+              });
+            });
+          }
+
+          // 限制最多顯示 4 組主要詞性避免卡片過長，並並行翻譯為繁體中文
+          const targetMeanings = allMeanings.slice(0, 4);
+          if (targetMeanings.length > 0) {
+            const translatedItems = await Promise.all(
+              targetMeanings.map(async (item) => {
+                try {
+                  const transRes = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(item.enText)}&langpair=en|zh-TW`, {
+                    signal: AbortSignal.timeout(2500)
+                  });
+                  if (transRes.ok) {
+                    const transData = await transRes.json();
+                    const zhText = transData?.responseData?.translatedText;
+                    if (zhText && zhText.toLowerCase() !== item.enText.toLowerCase()) {
+                      return { pos: item.pos, def: zhText };
+                    }
+                  }
+                } catch (e) {}
+                return { pos: item.pos, def: item.enText };
+              })
+            );
+
+            ZH_MULTI_DICT.set(word, translatedItems);
+            if (state.inspectingWord === word) {
+              renderMeaningItems(translatedItems);
+            }
+            return;
+          }
+        }
+      } catch (e) {}
+
+      // 4. 離線或找不到條目時的備援解析
+      const fallbackItems = analyzeMorphologyFallback(word, meta);
+      ZH_MULTI_DICT.set(word, fallbackItems);
+      if (state.inspectingWord === word) {
+        renderMeaningItems(fallbackItems);
+      }
+    }
+
+    /* ============================================================
+       5. 語音辨識出招 (Web Speech API)
+    ============================================================ */
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    let recognition = null;
+
+    if (SpeechRecognition) {
+      recognition = new SpeechRecognition();
+      recognition.continuous = false;
+      recognition.interimResults = false;
+      recognition.lang = 'en-US';
+
+      recognition.onstart = () => {
+        state.isListening = true;
+        els.voiceBtn.classList.add('mic-recording');
+        els.voiceIcon.textContent = '🔴';
+        els.voiceStatusText.textContent = '聆聽中...';
+        els.speechRealtimeHint.innerHTML = '<span class="text-rose-400 font-bold animate-pulse">🎙️ 正在收音... 請說英文單字</span>';
+      };
+
+      recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript.trim().toLowerCase();
+        let cleaned = transcript.replace(/[.,/#!$%^&*;:{}=\-_`~()]/g, '').trim().toLowerCase();
+        let autoAction = null;
+        let targetWord = cleaned;
+
+        if (cleaned.startsWith('attack ')) {
+          autoAction = 'attack';
+          targetWord = cleaned.replace('attack ', '').trim();
+        } else if (cleaned.startsWith('defend ') || cleaned.startsWith('shield ')) {
+          autoAction = 'defend';
+          targetWord = cleaned.replace(/^(defend|shield)\s+/, '').trim();
+        }
+
+        els.wordInput.value = targetWord;
+        els.speechRealtimeHint.innerHTML = `👂 聽見語音：<span class="text-cyan-300 font-bold font-mono">"${transcript}"</span> ➔ 單字: <span class="text-emerald-400 font-bold font-mono">${targetWord}</span>`;
+        updateLiveInputPreview(targetWord);
+
+        if (autoAction) {
+          setTimeout(() => handleAction(autoAction), 250);
+        }
+      };
+
+      recognition.onerror = () => stopListening();
+      recognition.onend = stopListening;
+      els.speechEngineStatus.textContent = '🎤 語音模組已就緒';
+    } else {
+      els.voiceBtn.disabled = true;
+      els.voiceBtn.classList.add('opacity-50');
+      els.speechEngineStatus.textContent = '⚠️ 瀏覽器未支援語音';
+    }
+
+    function toggleListening() {
+      if (!recognition) return;
+      if (state.isListening) {
+        recognition.stop();
+      } else {
+        try { sfx.init(); recognition.start(); } catch (e) { recognition.stop(); }
+      }
+    }
+
+    function stopListening() {
+      state.isListening = false;
+      els.voiceBtn.classList.remove('mic-recording');
+      els.voiceIcon.textContent = '🎙️';
+      els.voiceStatusText.textContent = '語音詠唱';
+      els.speechRealtimeHint.innerHTML = '💡 提示：輸入任意真單字（支援口說「attack + 單字」直接出招）';
+    }
+
+    function updateLiveInputPreview(rawWord) {
+      const clean = (rawWord || '').trim().toLowerCase().replace(/[^a-z]/g, '');
+      if (clean.length < 2) {
+        els.inputHint.textContent = '';
+        return;
+      }
+
+      if (state.usedWords.has(clean)) {
+        els.inputHint.innerHTML = `<span class="text-rose-400 font-bold">已冷卻(不可重複)</span>`;
+        return;
+      }
+
+      if (checkIsRealWord(clean)) {
+        const stats = evaluateWordStats(clean);
+        const meta = ELEMENT_META[stats.element];
+        let zhHint = '';
+        if (ZH_MULTI_DICT.has(clean)) {
+          const firstDef = ZH_MULTI_DICT.get(clean)[0]?.def || '';
+          zhHint = firstDef.split('；')[0].split('（')[0];
+        }
+        els.inputHint.innerHTML = `<span class="${meta.color}">${meta.icon} ${zhHint ? zhHint + ' ' : ''}攻:${stats.atk}/守:${stats.defVal}</span>`;
+      } else {
+        els.inputHint.innerHTML = `<span class="text-rose-400">非有效英文單字</span>`;
+      }
+    }
+
+    /* ============================================================
+       6. 戰鬥核心執行與出招
+    ============================================================ */
+    function handleAction(actionType) {
+      sfx.init();
+
+      if (state.gameOver) {
+        showAlert('對局已結束，請點擊「新對局」重新開始！');
+        sfx.playError();
+        return;
+      }
+
+      if (state.mode === 'pve' && state.turn === 'p2') {
+        showAlert('目前是 AI 回合，請稍候...');
+        sfx.playError();
+        return;
+      }
+
+      const rawInput = els.wordInput.value;
+      const cleanInput = (rawInput || '').trim().toLowerCase().replace(/[^a-z]/g, '');
+
+      if (!cleanInput) {
+        showAlert('請先輸入或說出英文字！');
+        sfx.playError();
+        els.wordInput.focus();
+        return;
+      }
+
+      if (state.usedWords.has(cleanInput)) {
+        showAlert(`⚠️ 單字「${cleanInput}」本局已經詠唱過，冷卻中！請換一個單字。`);
+        sfx.playError();
+        return;
+      }
+
+      if (!checkIsRealWord(cleanInput)) {
+        showAlert(`「${cleanInput}」非真實英文單字或屬於無效鍵盤亂碼！`);
+        sfx.playError();
+        return;
+      }
+
+      hideAlert();
+      const stats = evaluateWordStats(cleanInput);
+      executeTurn(state.turn, actionType, stats);
+      els.wordInput.value = '';
+      els.inputHint.textContent = '';
+      els.wordInput.focus();
+    }
+
+    function executeTurn(actor, actionType, wordObj) {
+      const cleanWord = wordObj.word.toLowerCase();
+      state.usedWords.add(cleanWord);
+      renderUsedWordsPool();
+
+      if (state.autoTts) {
+        speakWord(cleanWord);
+      }
+
+      const isP1 = actor === 'p1';
+      const user = isP1 ? state.p1 : state.p2;
+      const target = isP1 ? state.p2 : state.p1;
+      const actorName = isP1 ? '玩家 1 (蒼藍魔導)' : (state.mode === 'pve' ? '詞魂智腦 (AI)' : '玩家 2 (緋紅咒士)');
+      const elemInfo = ELEMENT_META[wordObj.element] || ELEMENT_META.fire;
+      
+      let zhBrief = '';
+      if (ZH_MULTI_DICT.has(cleanWord)) {
+        const firstDef = ZH_MULTI_DICT.get(cleanWord)[0]?.def || '';
+        zhBrief = ` (${firstDef.split('；')[0].split('（')[0]})`;
+      }
+
+      let logMsg = '';
+
+      if (actionType === 'attack') {
+        let dmg = Math.round(wordObj.atk * user.combo);
+        let extraText = '';
+
+        if (wordObj.element === 'fire') {
+          dmg = Math.round(dmg * 1.15);
+          extraText = '【🔥 烈焰爆擊】';
+        } else if (wordObj.element === 'thunder') {
+          const pierce = Math.min(target.shield, 12);
+          target.shield -= pierce;
+          extraText = `【⚡ 雷霆貫通 -${pierce} 護甲】`;
+        }
+
+        let remainingDmg = dmg;
+        let shieldAbsorbed = 0;
+        if (target.shield > 0) {
+          if (target.shield >= remainingDmg) {
+            target.shield -= remainingDmg;
+            shieldAbsorbed = remainingDmg;
+            remainingDmg = 0;
+          } else {
+            shieldAbsorbed = target.shield;
+            remainingDmg -= target.shield;
+            target.shield = 0;
+          }
+        }
+
+        target.hp = Math.max(0, target.hp - remainingDmg);
+        user.combo = +(user.combo + 0.1).toFixed(1);
+
+        sfx.playAttack();
+        shakeElement(isP1 ? els.p2Card : els.p1Card);
+        spawnFloatingText(isP1 ? els.p2Card : els.p1Card, `-${dmg} HP`, 'text-rose-400 font-black');
+
+        const displayElem = isP1 ? els.p1CastSpell : els.p2CastSpell;
+        const detailElem = isP1 ? els.p1CastDetail : els.p2CastDetail;
+        displayElem.innerHTML = `${elemInfo.icon} ${wordObj.word.toUpperCase()}`;
+        displayElem.className = `text-lg font-black font-fantasy ${elemInfo.color}`;
+        detailElem.textContent = `猛烈攻擊！造成 ${dmg} 點傷害 ${extraText}${zhBrief}`;
+
+        logMsg = `<span class="${isP1 ? 'text-cyan-400' : 'text-purple-400'} font-bold">${actorName}</span> 詠唱【${wordObj.word}】${elemInfo.icon} 攻擊！造成 <span class="text-rose-400 font-bold">${dmg}</span> 傷害 (護盾抵消:${shieldAbsorbed} 實扣:${remainingDmg})。${extraText}`;
+
+      } else {
+        let shieldGain = Math.round(wordObj.defVal * 1.25);
+        let extraText = '';
+
+        if (wordObj.element === 'ice') {
+          shieldGain = Math.round(shieldGain * 1.25);
+          extraText = '【❄️ 絕對冰界】';
+        } else if (wordObj.element === 'holy') {
+          const heal = Math.round(8 + wordObj.word.length);
+          user.hp = Math.min(user.maxHp, user.hp + heal);
+          extraText = `【✨ 聖光復甦 +${heal} HP】`;
+          spawnFloatingText(isP1 ? els.p1Card : els.p2Card, `+${heal} HP`, 'text-emerald-400 font-black');
+        }
+
+        user.shield += shieldGain;
+        sfx.playShield();
+        spawnFloatingText(isP1 ? els.p1Card : els.p2Card, `+${shieldGain} 護盾`, 'text-cyan-300 font-black');
+
+        const displayElem = isP1 ? els.p1CastSpell : els.p2CastSpell;
+        const detailElem = isP1 ? els.p1CastDetail : els.p2CastDetail;
+        displayElem.innerHTML = `🛡️ ${wordObj.word.toUpperCase()}`;
+        displayElem.className = `text-lg font-black font-fantasy ${elemInfo.color}`;
+        detailElem.textContent = `結晶壁障！生成 +${shieldGain} 點護甲 ${extraText}${zhBrief}`;
+
+        logMsg = `<span class="${isP1 ? 'text-cyan-400' : 'text-purple-400'} font-bold">${actorName}</span> 詠唱【${wordObj.word}】結晶護盾！獲得 <span class="text-cyan-400 font-bold">+${shieldGain}</span> 護甲。${extraText}`;
+      }
+
+      appendLog(logMsg);
+      updateUI();
+
+      if (target.hp <= 0) {
+        endGame(actor);
+        return;
+      }
+
+      state.turn = state.turn === 'p1' ? 'p2' : 'p1';
+      updateUI();
+
+      if (state.mode === 'pve' && state.turn === 'p2' && !state.gameOver) {
+        triggerAiTurn();
+      }
+    }
+
+    /* ============================================================
+       7. AI 運算出招
+    ============================================================ */
+    function triggerAiTurn() {
+      els.p2Status.textContent = '語魂智腦運算中...';
+      els.attackBtn.disabled = true;
+      els.defendBtn.disabled = true;
+      els.wordInput.disabled = true;
+      els.turnPrompt.textContent = '🤖 詞魂智腦運算詠唱中...';
+
+      state.aiTimer = setTimeout(() => {
+        if (state.gameOver) return;
+
+        let candidates = FALLBACK_WORDS.filter(w => !state.usedWords.has(w));
+        if (candidates.length === 0) candidates = FALLBACK_WORDS;
+
+        let action = 'attack';
+        if (state.p2.hp < 40 && state.p2.shield < 10) {
+          action = Math.random() < 0.65 ? 'defend' : 'attack';
+        } else {
+          action = Math.random() < 0.75 ? 'attack' : 'defend';
+        }
+
+        const chosenKey = candidates[Math.floor(Math.random() * candidates.length)];
+        const stats = evaluateWordStats(chosenKey);
+
+        els.attackBtn.disabled = false;
+        els.defendBtn.disabled = false;
+        els.wordInput.disabled = false;
+
+        executeTurn('p2', action, stats);
+        state.aiTimer = null;
+
+      }, 850 + Math.random() * 400);
+    }
+
+    /* ============================================================
+       8. 勝負結算與畫面
+    ============================================================ */
+    function endGame(winner) {
+      state.gameOver = true;
+      if (state.aiTimer) clearTimeout(state.aiTimer);
+      sfx.playVictory();
+
+      const isP1 = winner === 'p1';
+      const winnerName = isP1 ? '玩家 1 (蒼藍魔導)' : (state.mode === 'pve' ? '詞魂智腦 (AI)' : '玩家 2 (緋紅咒士)');
+      
+      const banner = document.createElement('div');
+      banner.className = 'p-3 bg-gradient-to-r from-amber-500/20 via-yellow-500/30 to-amber-500/20 border border-yellow-500/60 rounded-xl text-center font-bold text-yellow-300 text-sm my-2';
+      banner.innerHTML = `🏆 語源擂台結算！【${winnerName}】獲得了最終勝利！請點擊上方「新對局」。`;
+      els.battleLog.prepend(banner);
+
+      els.turnPrompt.textContent = `對決結束！勝者：${winnerName}`;
+      els.attackBtn.disabled = true;
+      els.defendBtn.disabled = true;
+      els.wordInput.disabled = true;
+    }
+
+    function resetBattleState() {
+      if (state.aiTimer) clearTimeout(state.aiTimer);
+      state.gameOver = false;
+      state.turn = 'p1';
+      state.p1 = { hp: 100, maxHp: 100, shield: 0, combo: 1.0 };
+      state.p2 = { hp: 100, maxHp: 100, shield: 0, combo: 1.0 };
+      state.usedWords.clear();
+      state.inspectingWord = null;
+
+      els.attackBtn.disabled = false;
+      els.defendBtn.disabled = false;
+      els.wordInput.disabled = false;
+      els.wordInput.value = '';
+      els.inputHint.textContent = '';
+      els.wordDetailCard.classList.add('hidden');
+
+      els.p1CastSpell.textContent = '等待詠唱...';
+      els.p1CastDetail.textContent = '鍵入單字或點擊麥克風口說出招';
+      els.p2CastSpell.textContent = state.mode === 'pve' ? '詞魂智腦休眠中' : '等待 P2 詠唱';
+      els.p2CastDetail.textContent = '等待輪替行動...';
+
+      els.battleLog.innerHTML = `<div class="text-slate-400">✨ 新對決開始！【${state.mode === 'pve' ? '單人挑戰 AI' : '同機雙人'}】模式。點擊已詠唱單字可查看完整多義中文詳解！</div>`;
+      hideAlert();
+      renderUsedWordsPool();
+      updateUI();
+    }
+
+    function updateUI() {
+      els.p1HpVal.textContent = state.p1.hp;
+      els.p2HpVal.textContent = state.p2.hp;
+      els.p1ShieldVal.textContent = state.p1.shield;
+      els.p2ShieldVal.textContent = state.p2.shield;
+
+      els.p1HpBar.style.width = `${Math.max(0, (state.p1.hp / state.p1.maxHp) * 100)}%`;
+      els.p2HpBar.style.width = `${Math.max(0, (state.p2.hp / state.p2.maxHp) * 100)}%`;
+
+      els.p1ShieldBar.style.width = `${Math.min(100, (state.p1.shield / 60) * 100)}%`;
+      els.p2ShieldBar.style.width = `${Math.min(100, (state.p2.shield / 60) * 100)}%`;
+
+      els.p1Combo.textContent = `x${state.p1.combo.toFixed(1)}`;
+      els.p2Combo.textContent = `x${state.p2.combo.toFixed(1)}`;
+
+      const isP1Turn = state.turn === 'p1';
+      els.p1TurnBadge.classList.toggle('hidden', !isP1Turn);
+      els.p2TurnBadge.classList.toggle('hidden', isP1Turn);
+
+      if (isP1Turn) {
+        els.p1Card.classList.add('neon-border-p1');
+        els.p1Card.classList.remove('opacity-75');
+        els.p2Card.classList.remove('neon-border-p2', 'neon-border-ai');
+        els.p2Card.classList.add('opacity-75');
+        els.turnIndicatorDot.style.background = '#38bdf8';
+        els.turnPrompt.textContent = '輪到 P1 (蒼藍魔導) 詠唱：';
+        els.p1Status.textContent = '詠唱中...';
+        els.p2Status.textContent = '守備中';
+      } else {
+        if (state.mode === 'pve') {
+          els.p2Card.classList.add('neon-border-ai');
+        } else {
+          els.p2Card.classList.add('neon-border-p2');
+        }
+        els.p2Card.classList.remove('opacity-75');
+        els.p1Card.classList.remove('neon-border-p1');
+        els.p1Card.classList.add('opacity-75');
+        els.turnIndicatorDot.style.background = state.mode === 'pve' ? '#a855f7' : '#f43f5e';
+        els.turnPrompt.textContent = state.mode === 'pve' ? '🤖 詞魂智腦運算詠唱中...' : '輪到 P2 (緋紅咒士) 詠唱：';
+        els.p2Status.textContent = '詠唱中...';
+        els.p1Status.textContent = '守備中';
+      }
+    }
+
+    function renderUsedWordsPool() {
+      els.usedWordsContainer.innerHTML = '';
+      els.usedWordCount.textContent = `${state.usedWords.size} 個`;
+
+      if (state.usedWords.size === 0) {
+        els.usedWordsContainer.innerHTML = '<span class="text-slate-500 italic">尚無冷卻單字，任何真實英文單字皆可自由出招...</span>';
+        return;
+      }
+
+      state.usedWords.forEach(wordKey => {
+        const stats = evaluateWordStats(wordKey);
+        const meta = ELEMENT_META[stats.element];
+        const tag = document.createElement('button');
+        tag.className = `px-2 py-0.5 rounded border text-[11px] font-mono flex items-center gap-1 bg-slate-900 hover:bg-slate-800 border-slate-700 ${meta.color} cursor-pointer transition-all active:scale-95`;
+        tag.innerHTML = `<span>${meta.icon}</span> <span>${wordKey}</span> <span class="text-slate-500 text-[10px]">🔊</span>`;
+        tag.title = '點擊聽發音並查看所有詞性與中文釋義';
+        tag.addEventListener('click', (e) => {
+          e.preventDefault();
+          inspectWord(wordKey);
+        });
+        els.usedWordsContainer.appendChild(tag);
+      });
+    }
+
+    function showAlert(text) {
+      els.alertMsgText.textContent = text;
+      els.alertMsg.classList.remove('opacity-0');
+      clearTimeout(showAlert.timer);
+      showAlert.timer = setTimeout(hideAlert, 3200);
+    }
+
+    function hideAlert() {
+      els.alertMsg.classList.add('opacity-0');
+    }
+
+    function appendLog(html) {
+      const line = document.createElement('div');
+      line.className = 'text-slate-300 border-b border-slate-800/40 pb-0.5';
+      line.innerHTML = html;
+      els.battleLog.prepend(line);
+    }
+
+    function shakeElement(el) {
+      if (!el) return;
+      el.classList.add('shake');
+      setTimeout(() => el.classList.remove('shake'), 450);
+    }
+
+    function spawnFloatingText(targetEl, text, classes = 'text-white') {
+      try {
+        if (!targetEl || !els.fxOverlay) return;
+        const rect = targetEl.getBoundingClientRect();
+        const parentRect = els.fxOverlay.getBoundingClientRect();
+        const span = document.createElement('div');
+        span.className = `absolute floating-text font-bold text-lg sm:text-2xl drop-shadow-lg ${classes}`;
+        span.textContent = text;
+        span.style.left = `${(rect.left - parentRect.left) + rect.width / 2 - 30}px`;
+        span.style.top = `${(rect.top - parentRect.top) + rect.height / 3}px`;
+        els.fxOverlay.appendChild(span);
+        setTimeout(() => { if (span.parentNode) span.remove(); }, 1200);
+      } catch (e) {}
+    }
+
+    /* ============================================================
+       9. 事件綁定
+    ============================================================ */
+    els.modeAiBtn.addEventListener('click', () => {
+      state.mode = 'pve';
+      els.modeAiBtn.className = 'px-3 py-1.5 rounded-lg text-xs font-bold transition-all bg-purple-600 text-white shadow-md flex items-center gap-1 cursor-pointer';
+      els.modePvpBtn.className = 'px-3 py-1.5 rounded-lg text-xs font-bold transition-all text-slate-400 hover:text-white flex items-center gap-1 cursor-pointer';
+      els.aiDiffWrapper.classList.remove('hidden');
+      els.p2NameLabel.textContent = '詞魂智腦 (AI 挑戰者)';
+      els.p2Avatar.textContent = '🤖';
+      resetBattleState();
+    });
+
+    els.modePvpBtn.addEventListener('click', () => {
+      state.mode = 'pvp';
+      els.modePvpBtn.className = 'px-3 py-1.5 rounded-lg text-xs font-bold transition-all bg-rose-600 text-white shadow-md flex items-center gap-1 cursor-pointer';
+      els.modeAiBtn.className = 'px-3 py-1.5 rounded-lg text-xs font-bold transition-all text-slate-400 hover:text-white flex items-center gap-1 cursor-pointer';
+      els.aiDiffWrapper.classList.add('hidden');
+      els.p2NameLabel.textContent = '玩家 2 (緋紅咒士)';
+      els.p2Avatar.textContent = '🦹';
+      resetBattleState();
+    });
+
+    els.autoTtsBtn.addEventListener('click', () => {
+      state.autoTts = !state.autoTts;
+      if (state.autoTts) {
+        els.autoTtsIcon.textContent = '🔊';
+        els.autoTtsText.textContent = '朗讀：開';
+        els.autoTtsBtn.className = 'px-3 py-2 rounded-xl text-xs font-bold border border-emerald-500/40 bg-emerald-950/40 hover:bg-emerald-900/60 text-emerald-300 transition-all flex items-center gap-1 shadow-sm active:scale-95 cursor-pointer';
+      } else {
+        els.autoTtsIcon.textContent = '🔇';
+        els.autoTtsText.textContent = '朗讀：關';
+        els.autoTtsBtn.className = 'px-3 py-2 rounded-xl text-xs font-bold border border-slate-700 bg-slate-800/60 hover:bg-slate-700 text-slate-400 transition-all flex items-center gap-1 shadow-sm active:scale-95 cursor-pointer';
+        window.speechSynthesis?.cancel();
+      }
+    });
+
+    els.voiceBtn.addEventListener('click', toggleListening);
+    els.attackBtn.addEventListener('click', () => handleAction('attack'));
+    els.defendBtn.addEventListener('click', () => handleAction('defend'));
+
+    els.wordInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        handleAction(e.shiftKey || e.ctrlKey ? 'defend' : 'attack');
+      }
+    });
+
+    els.wordInput.addEventListener('input', (e) => {
+      updateLiveInputPreview(e.target.value);
+    });
+
+    els.restartBtn.addEventListener('click', resetBattleState);
+    els.clearLogBtn.addEventListener('click', () => {
+      els.battleLog.innerHTML = '<div class="text-slate-500 italic">日誌已清空。</div>';
+    });
+
+    els.detailAudioBtn.addEventListener('click', () => {
+      if (state.inspectingWord) speakWord(state.inspectingWord);
+    });
+    els.closeDetailBtn.addEventListener('click', () => {
+      els.wordDetailCard.classList.add('hidden');
+    });
+
+    loadFullDictionary();
+    resetBattleState();
+  </script>
+</body>
+</html>
